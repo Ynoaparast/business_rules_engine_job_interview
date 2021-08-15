@@ -33,6 +33,10 @@ namespace BusinessRulesEngine
                 payment.BusinessRules.Add(new GenerateAgentCommissionBusinessRule());
             }
 
+            if (payment.Product.GetType() == typeof(Membership))
+            {
+                payment.BusinessRules.Add(new ActivateMembershipBusinessRule());
+            }
             return payment;
         }
     }
