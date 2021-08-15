@@ -8,7 +8,7 @@ using FluentAssertions;
 
 namespace Test_BusinessRulesEngine
 {
-    public class Tests
+    public class BusinessRulesEngineTests
     {
         [SetUp]
         public void Setup()
@@ -53,6 +53,26 @@ namespace Test_BusinessRulesEngine
             
             //Assert
             processedPayment.BusinessRules.Count(rule => rule.GetType() == typeof(GeneratePackagingSlipBusinessRule)).Should().Be(2, "because two packaging slips are to be created");
+        }
+
+        [Test]
+        public void Should_AddressPackagingSlipsToCustomerAndRoyaltyDepartment_ForBook()
+        {
+            //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new Product() { IsPhysical = true, ProductType = "Book" }
+            };
+
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            var returnedRules = processedPayment.BusinessRules.FindAll(rule => rule.GetType() == typeof(GeneratePackagingSlipBusinessRule)).Cast<GeneratePackagingSlipBusinessRule>().ToList();
+
+            //Assert
+
+            returnedRules.Should().Contain(rule => rule.SlipDestination == "Customer").And
+                .Contain(rule => rule.SlipDestination == "Royalty");
         }
     }
 }
