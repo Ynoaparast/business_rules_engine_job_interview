@@ -1,9 +1,7 @@
-﻿using BusinessRulesEngine.Models;
-
-namespace BusinessRulesEngine.Interfaces
+﻿namespace BusinessRulesEngine.Interfaces
 {
     public interface IBusinessRule
     {
-        void ExecuteBusinessRule(Product product);
+        void ExecuteBusinessRule(IProduct product);
     }
 }
