@@ -10,5 +10,6 @@ namespace BusinessRulesEngine.Interfaces
     {
         public IProduct Product { get; set; }
         List<IBusinessRule> BusinessRules { get; set; }
+        public void ExecuteBusinessRules();
     }
 }

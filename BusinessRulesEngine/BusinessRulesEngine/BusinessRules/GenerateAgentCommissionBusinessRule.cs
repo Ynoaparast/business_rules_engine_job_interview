@@ -7,5 +7,9 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class GenerateAgentCommissionBusinessRule : IBusinessRule
     {
+        public void ExecuteBusinessRule(IProduct product)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

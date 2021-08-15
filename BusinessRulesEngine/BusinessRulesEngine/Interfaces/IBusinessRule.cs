@@ -2,6 +2,6 @@
 {
     public interface IBusinessRule
     {
-      
+        void ExecuteBusinessRule(IProduct product);
     }
 }

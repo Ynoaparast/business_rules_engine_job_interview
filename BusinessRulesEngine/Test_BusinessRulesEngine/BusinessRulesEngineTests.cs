@@ -121,6 +121,7 @@ namespace Test_BusinessRulesEngine
 
             //Act
             var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            processedPayment.ExecuteBusinessRules();
             var processedProduct = (Membership) processedPayment.Product;
 
             //Assert
