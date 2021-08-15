@@ -106,7 +106,7 @@ namespace Test_BusinessRulesEngine
 
             //Assert
             processedPayment.BusinessRules.Should()
-                .ContainSingle(rule => rule.GetType() == typeof(ActivateMembershipBusinessRule), "because a payment for a membership should activate the membership");
+                .ContainSingle(rule => rule.GetType() == typeof(ActivateMembershipBusinessRule), "because a payment for a membership should apply the membership activation rule");
         }
 
         [Test]
