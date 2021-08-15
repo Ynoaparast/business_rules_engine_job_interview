@@ -20,12 +20,12 @@ namespace BusinessRulesEngine
            
             if (payment.Product.IsPhysical)
             {
-              payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule());
+              payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule(){SlipDestination = "Customer"});
             }
 
             if (payment.Product.ProductType == "Book")
             {
-                payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule());
+                payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule(){SlipDestination = "Royalty"});
             }
             return payment;
         }

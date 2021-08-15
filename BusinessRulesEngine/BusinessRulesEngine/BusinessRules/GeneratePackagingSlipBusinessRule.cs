@@ -7,6 +7,6 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class GeneratePackagingSlipBusinessRule : IBusinessRule
     {
-
+        public string SlipDestination { get; set; }
     }
 }
