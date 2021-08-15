@@ -36,12 +36,16 @@ namespace BusinessRulesEngine
             if (payment.Product.GetType() == typeof(Membership))
             {
                 payment.BusinessRules.Add(new ActivateMembershipBusinessRule());
+                payment.BusinessRules.Add(new SendEmailForMembershipBusinessRule());
             }
 
             if (payment.Product.GetType() == typeof(MembershipUpgrade))
             {
                 payment.BusinessRules.Add(new UpgradeMembershipBusinessRule());
+                payment.BusinessRules.Add(new SendEmailForMembershipBusinessRule());
             }
+
+         
             return payment;
         }
     }
