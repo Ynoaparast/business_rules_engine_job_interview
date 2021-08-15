@@ -23,12 +23,12 @@ namespace BusinessRulesEngine
               payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule(){SlipDestination = "Customer"});
             }
 
-            if (payment.Product.ProductType == "Book")
+            if (payment.Product.GetType() == typeof(Book))
             {
                 payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule(){SlipDestination = "Royalty"});
             }
 
-            if (payment.Product.IsPhysical || payment.Product.ProductType == "Book")
+            if (payment.Product.IsPhysical || payment.Product.GetType() == typeof(Book))
             {
                 payment.BusinessRules.Add(new GenerateAgentCommissionBusinessRule());
             }
