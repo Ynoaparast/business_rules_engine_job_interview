@@ -8,9 +8,17 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class AddFreeFirstAidVideoBusinessRule: IBusinessRule
     {
+        public PackagingSlip PackagingSlip;
+
+        public AddFreeFirstAidVideoBusinessRule(string slipDestination)
+        {
+            PackagingSlip = new PackagingSlip(slipDestination);
+        }
+
         public void ExecuteBusinessRule(Product product)
         {
-           
+            var video = new Video() {Title = "First Aid", IsPhysical = true};
+            PackagingSlip.ProductsToPack.Add(video);
         }
     }
 }

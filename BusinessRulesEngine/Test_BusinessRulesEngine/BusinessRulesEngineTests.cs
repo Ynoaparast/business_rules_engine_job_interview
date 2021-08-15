@@ -28,7 +28,7 @@ namespace Test_BusinessRulesEngine
             var paymentHandler = new PaymentHandler();
             var payment = new Payment()
             {
-                Product = new Product() {IsPhysical = true, ProductType = "CD"}
+                Product = new Product() {IsPhysical = true}
             };
 
             //Act
@@ -71,8 +71,8 @@ namespace Test_BusinessRulesEngine
 
             //Assert
 
-            returnedRules.Should().Contain(rule => rule.SlipDestination == "Customer").And
-                .Contain(rule => rule.SlipDestination == "Royalty");
+            returnedRules.Should().Contain(rule => rule.PackagingSlip.SlipDestination == "Customer").And
+                .Contain(rule => rule.PackagingSlip.SlipDestination == "Royalty");
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Test_BusinessRulesEngine
             var paymentHandler = new PaymentHandler();
             var payment = new Payment()
             {
-                Product = new Membership() { IsPhysical = false, ProductType = "Membership", IsActive = false }
+                Product = new Membership() { IsPhysical = false, IsActive = false }
             };
 
             //Act
@@ -116,7 +116,7 @@ namespace Test_BusinessRulesEngine
             var paymentHandler = new PaymentHandler();
             var payment = new Payment()
             {
-                Product = new Membership() { IsPhysical = false, ProductType = "Membership", IsActive = false },
+                Product = new Membership() { IsPhysical = false, IsActive = false },
                 Customer = new Customer
                 {
                     Email = "email@mailer.com",
@@ -143,7 +143,7 @@ namespace Test_BusinessRulesEngine
             var membership = new Membership();
             var payment = new Payment()
             {
-                Product = new MembershipUpgrade() { ProductType = "Upgrade", Membership = membership},
+                Product = new MembershipUpgrade() { Membership = membership},
                 Customer = new Customer
                 {
                     Email = "email@mailer.com",
@@ -217,7 +217,8 @@ namespace Test_BusinessRulesEngine
             {
                 Product = new Video()
                 {
-                    Title = "Learning to Ski"
+                    Title = "Learning to Ski",
+                    IsPhysical = true
                 }
                
             };

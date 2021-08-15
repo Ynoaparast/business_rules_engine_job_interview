@@ -8,10 +8,17 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class GeneratePackagingSlipBusinessRule : IBusinessRule
     {
-        public string SlipDestination { get; set; }
+
+        public PackagingSlip PackagingSlip;
+
+        public GeneratePackagingSlipBusinessRule(string slipDestination)
+        {
+            PackagingSlip = new PackagingSlip(slipDestination);
+        }
+
         public void ExecuteBusinessRule(Product product)
         {
-            throw new NotImplementedException();
+            PackagingSlip.ProductsToPack.Add(product);
         }
     }
 }

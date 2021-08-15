@@ -10,7 +10,7 @@ namespace BusinessRulesEngine.BusinessRules
     {
         public void ExecuteBusinessRule(Product product)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
