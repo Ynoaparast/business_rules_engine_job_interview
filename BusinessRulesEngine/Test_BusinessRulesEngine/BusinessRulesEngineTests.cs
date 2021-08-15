@@ -134,9 +134,10 @@ namespace Test_BusinessRulesEngine
 
            //Arrange
             var paymentHandler = new PaymentHandler();
+            var membership = new Membership();
             var payment = new Payment()
             {
-                Product = new MembershipUpgrade() { IsPhysical = false, ProductType = "Upgrade"}
+                Product = new MembershipUpgrade() { ProductType = "Upgrade", Membership = membership}
             };
 
             //Act
@@ -145,7 +146,7 @@ namespace Test_BusinessRulesEngine
             var processedProduct = (MembershipUpgrade) processedPayment.Product;
 
             //Assert
-            processedProduct.IsUpgraded.Should().Be(true, "because a payment for a membership upgrade should upgrade the membership");
+            processedProduct.Membership.IsUpgraded.Should().Be(true, "because a payment for a membership upgrade should upgrade the membership");
 
         }
 
