@@ -27,6 +27,12 @@ namespace BusinessRulesEngine
             {
                 payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule(){SlipDestination = "Royalty"});
             }
+
+            if (payment.Product.IsPhysical || payment.Product.ProductType == "Book")
+            {
+                payment.BusinessRules.Add(new GenerateAgentCommissionBusinessRule());
+            }
+
             return payment;
         }
     }
