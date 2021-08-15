@@ -169,6 +169,34 @@ namespace Test_BusinessRulesEngine
         }
 
 
+        [Test]
+        public void Should_SetCustomerDetailsForSendingEmail_ForMembershipActions()
+        {
+            //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new Membership(),
+                Customer = new Customer()
+                {
+                    Email = "email@mailer.com",
+                    Firstname = "Foo",
+                    Lastname = "Bar"
+                }
+            };
+
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            processedPayment.ExecuteBusinessRules();
+            var businessRule = (SendEmailForMembershipBusinessRule) processedPayment.BusinessRules.Find(rule => rule.GetType() == typeof(SendEmailForMembershipBusinessRule));
+            
+            //Assert
+            businessRule.Email.Should().BeEquivalentTo(new Email()
+                {To = payment.Customer.Email, Content = $"Dear {payment.Customer.Firstname} {payment.Customer.Lastname}, your membership has been activated"});
+
+        }
+
+
 
     }
 }
