@@ -208,6 +208,28 @@ namespace Test_BusinessRulesEngine
 
         }
 
+        [Test]
+        public void Should_ApplyFreeVideoRule_ForLearningToSkiVideo()
+        {
+            //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new Video()
+                {
+                    Title = "Learning to Ski"
+                }
+               
+            };
+
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+
+            //Assert
+            processedPayment.BusinessRules.Should().ContainSingle(rule => rule.GetType() == typeof(AddFreeFirstAidVideoBusinessRule), "because buying 'the Learning to Ski' qualifies the customer for a free 'First aid' video");
+
+        }
+
 
 
     }
