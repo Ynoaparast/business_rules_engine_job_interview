@@ -129,7 +129,7 @@ namespace Test_BusinessRulesEngine
         }
 
         [Test]
-        public void Should_ApplyUpgradeMembershipRule_ForMembershipProduct()
+        public void Should_UpgradeMembership_ForMembershipUpgradeProduct()
         {
 
            //Arrange
@@ -149,6 +149,8 @@ namespace Test_BusinessRulesEngine
             processedProduct.Membership.IsUpgraded.Should().Be(true, "because a payment for a membership upgrade should upgrade the membership");
 
         }
+
+   
 
 
 
