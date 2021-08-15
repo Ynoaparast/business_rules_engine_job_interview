@@ -150,7 +150,23 @@ namespace Test_BusinessRulesEngine
 
         }
 
-   
+        [Test]
+        public void Should_ApplySendEmailOnActivationOrUpgrade_ForMembershipActions()
+        {
+            //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new Membership()
+            };
+
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            
+            //Assert
+            processedPayment.BusinessRules.Should().ContainSingle(rule => rule.GetType() == typeof(SendEmailForMembershipBusinessRule),
+                "because creating or upgrading a membership should send the owner an email");
+        }
 
 
 
