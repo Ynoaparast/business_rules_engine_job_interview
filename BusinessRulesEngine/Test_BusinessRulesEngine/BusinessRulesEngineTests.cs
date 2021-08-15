@@ -90,5 +90,23 @@ namespace Test_BusinessRulesEngine
             //Assert
             processedPayment.BusinessRules.Should().ContainSingle(rule => rule.GetType() == typeof(GenerateAgentCommissionBusinessRule), "because a physical product or book should generate a commission to an agent");
         }
+
+        [Test]
+        public void Should_ApplyMembershipActivationRule_ForMembershipProduct()
+        {
+            //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new Membership() { IsPhysical = false, ProductType = "Membership", IsActive = false }
+            };
+
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+
+            //Assert
+            processedPayment.BusinessRules.Should()
+                .ContainSingle(rule => rule.GetType() == typeof(ActivateMembershipBusinessRule), "because a payment for a membership should activate the membership");
+        }
     }
 }
