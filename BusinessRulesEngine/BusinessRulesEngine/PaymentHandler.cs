@@ -37,6 +37,11 @@ namespace BusinessRulesEngine
             {
                 payment.BusinessRules.Add(new ActivateMembershipBusinessRule());
             }
+
+            if (payment.Product.GetType() == typeof(MembershipUpgrade))
+            {
+                payment.BusinessRules.Add(new UpgradeMembershipBusinessRule());
+            }
             return payment;
         }
     }

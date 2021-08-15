@@ -10,8 +10,8 @@ namespace BusinessRulesEngine.BusinessRules
     {
         public void ExecuteBusinessRule(Product product)
         {
-            var membership = (Membership) product;
-            membership.IsUpgraded = true;
+            var membershipUpgrade =  (MembershipUpgrade) product;
+            membershipUpgrade.Membership.IsUpgraded = true;
         }
     }
 }
