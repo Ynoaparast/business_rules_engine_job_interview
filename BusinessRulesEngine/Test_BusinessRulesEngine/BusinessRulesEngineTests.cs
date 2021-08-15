@@ -108,5 +108,25 @@ namespace Test_BusinessRulesEngine
             processedPayment.BusinessRules.Should()
                 .ContainSingle(rule => rule.GetType() == typeof(ActivateMembershipBusinessRule), "because a payment for a membership should activate the membership");
         }
+
+        [Test]
+        public void Should_ActivateMembership_ForMembershipProduct()
+        {
+            //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new Membership() { IsPhysical = false, ProductType = "Membership", IsActive = false }
+            };
+
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            var processedProduct = (Membership) processedPayment.Product;
+
+            //Assert
+            processedProduct.IsActive.Should().Be(true, "because a payment for a membership should activate the membership");
+        }
+
+
     }
 }
