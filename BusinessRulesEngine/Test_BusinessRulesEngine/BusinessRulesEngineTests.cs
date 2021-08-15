@@ -45,7 +45,7 @@ namespace Test_BusinessRulesEngine
             var paymentHandler = new PaymentHandler();
             var payment = new Payment()
             {
-                Product = new Product() { IsPhysical = true, ProductType = "Book" }
+                Product = new Book() { IsPhysical = true}
             };
 
             //Act
@@ -62,7 +62,7 @@ namespace Test_BusinessRulesEngine
             var paymentHandler = new PaymentHandler();
             var payment = new Payment()
             {
-                Product = new Product() { IsPhysical = true, ProductType = "Book" }
+                Product = new Book() { IsPhysical = true}
             };
 
             //Act
@@ -82,7 +82,7 @@ namespace Test_BusinessRulesEngine
             var paymentHandler = new PaymentHandler();
             var payment = new Payment()
             {
-                Product = new Product() { IsPhysical = true, ProductType = "Book" }
+                Product = new Book() { IsPhysical = true}
             };
 
             //Act
