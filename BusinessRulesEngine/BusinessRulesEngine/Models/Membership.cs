@@ -5,10 +5,8 @@ using BusinessRulesEngine.Interfaces;
 
 namespace BusinessRulesEngine.Models
 {
-    public class Membership : IProduct
+    public class Membership : Product
     {
-        public bool IsPhysical { get; set; }
-        public string ProductType { get; set; }
         public bool IsActive { get; set; }
         public bool IsUpgraded { get; set; }
     }

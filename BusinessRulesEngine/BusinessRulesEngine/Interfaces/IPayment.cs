@@ -8,7 +8,7 @@ namespace BusinessRulesEngine.Interfaces
 {
     public interface IPayment
     {
-        public IProduct Product { get; set; }
+        public Product Product { get; set; }
         List<IBusinessRule> BusinessRules { get; set; }
         public void ExecuteBusinessRules();
     }

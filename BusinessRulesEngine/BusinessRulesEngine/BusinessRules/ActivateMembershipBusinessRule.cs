@@ -8,7 +8,7 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class ActivateMembershipBusinessRule : IBusinessRule
     {
-        public void ExecuteBusinessRule(IProduct product)
+        public void ExecuteBusinessRule(Product product)
         {
             var membershipProduct = (Membership) product;
             membershipProduct.IsActive = true;
