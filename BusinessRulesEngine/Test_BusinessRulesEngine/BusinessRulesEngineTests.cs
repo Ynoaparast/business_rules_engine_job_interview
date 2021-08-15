@@ -230,7 +230,29 @@ namespace Test_BusinessRulesEngine
 
         }
 
+        [Test]
+        public void Should_AddFirstVideoToPackagingSlip_ForLearningToSkiVideo()
+        {
+            //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new Video()
+                {
+                    Title = "Learning to Ski",
+                    IsPhysical = true
+                }
 
+            };
 
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            processedPayment.ExecuteBusinessRules();
+            var businessRule = (AddFreeFirstAidVideoBusinessRule) processedPayment.BusinessRules.Find(rule => rule.GetType() == typeof(AddFreeFirstAidVideoBusinessRule));
+            var product = businessRule.PackagingSlip.ProductsToPack.Find(product => product.GetType() == typeof(Video));
+            //Assert
+            product.Should().BeEquivalentTo(new Video() {Title = "First Aid", IsPhysical = true});
+
+        }
     }
 }
