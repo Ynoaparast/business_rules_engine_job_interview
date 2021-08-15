@@ -116,7 +116,13 @@ namespace Test_BusinessRulesEngine
             var paymentHandler = new PaymentHandler();
             var payment = new Payment()
             {
-                Product = new Membership() { IsPhysical = false, ProductType = "Membership", IsActive = false }
+                Product = new Membership() { IsPhysical = false, ProductType = "Membership", IsActive = false },
+                Customer = new Customer
+                {
+                    Email = "email@mailer.com",
+                    Firstname = "Foo",
+                    Lastname = "Bar"
+                }
             };
 
             //Act
@@ -137,7 +143,13 @@ namespace Test_BusinessRulesEngine
             var membership = new Membership();
             var payment = new Payment()
             {
-                Product = new MembershipUpgrade() { ProductType = "Upgrade", Membership = membership}
+                Product = new MembershipUpgrade() { ProductType = "Upgrade", Membership = membership},
+                Customer = new Customer
+                {
+                    Email = "email@mailer.com",
+                    Firstname = "Foo",
+                    Lastname = "Bar"
+                }
             };
 
             //Act
