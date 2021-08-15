@@ -45,6 +45,11 @@ namespace BusinessRulesEngine
                 payment.BusinessRules.Add(new SendEmailForMembershipBusinessRule(payment.Customer));
             }
 
+            if (payment.Product is Video {Title: "Learning to Ski"})
+            {
+                payment.BusinessRules.Add(new AddFreeFirstAidVideoBusinessRule());
+            }
+
          
             return payment;
         }
