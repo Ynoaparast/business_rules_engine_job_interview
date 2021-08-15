@@ -128,6 +128,28 @@ namespace Test_BusinessRulesEngine
             processedProduct.IsActive.Should().Be(true, "because a payment for a membership should activate the membership");
         }
 
+        [Test]
+        public void Should_ApplyUpgradeMembershipRule_ForMembershipProduct()
+        {
+
+           //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new MembershipUpgrade() { IsPhysical = false, ProductType = "Upgrade"}
+            };
+
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            processedPayment.ExecuteBusinessRules();
+            var processedProduct = (MembershipUpgrade) processedPayment.Product;
+
+            //Assert
+            processedProduct.IsUpgraded.Should().Be(true, "because a payment for a membership upgrade should upgrade the membership");
+
+        }
+
+
 
     }
 }
