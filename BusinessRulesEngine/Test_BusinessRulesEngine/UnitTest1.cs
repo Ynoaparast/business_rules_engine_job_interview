@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net.Http.Headers;
 using BusinessRulesEngine;
 using BusinessRulesEngine.BusinessRules;
@@ -35,6 +36,23 @@ namespace Test_BusinessRulesEngine
 
             //Assert 
             processedPayment.BusinessRules.Should().ContainSingle(rule => rule.GetType() == typeof(GeneratePackagingSlipBusinessRule));
+        }
+
+        [Test]
+        public void Should_ApplyPackagingSlipRuleTwice_ForBook()
+        {
+            //Arrange
+            var paymentHandler = new PaymentHandler();
+            var payment = new Payment()
+            {
+                Product = new Product() { IsPhysical = true, ProductType = "Book" }
+            };
+
+            //Act
+            var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            
+            //Assert
+            processedPayment.BusinessRules.Count(rule => rule.GetType() == typeof(GeneratePackagingSlipBusinessRule)).Should().Be(2, "because two packaging slips are to be created");
         }
     }
 }
