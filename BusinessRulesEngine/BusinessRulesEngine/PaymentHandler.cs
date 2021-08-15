@@ -23,6 +23,10 @@ namespace BusinessRulesEngine
               payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule());
             }
 
+            if (payment.Product.ProductType == "Book")
+            {
+                payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule());
+            }
             return payment;
         }
     }
