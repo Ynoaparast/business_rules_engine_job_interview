@@ -61,27 +61,32 @@ namespace Test_BusinessRulesEngine
             //Assert
             processedPayment.BusinessRules.Count(rule => rule.GetType() == typeof(GeneratePackagingSlipBusinessRule)).Should().Be(2, "because two packaging slips are to be created");
         }
-        /*
+      
         [Test]
         public void Should_AddressPackagingSlipsToCustomerAndRoyaltyDepartment_ForBook()
         {
             //Arrange
             var paymentHandler = new PaymentHandler();
+            var product = new Book() { IsPhysical = true };
+            var order = new Order();
+            order.Products.Add(product);
+
             var payment = new Payment()
             {
-                Product = new Book() { IsPhysical = true}
+                Order = order
             };
-
             //Act
             var processedPayment = paymentHandler.ApplyBusinessRules(payment);
+            processedPayment.ExecuteBusinessRules();
             var returnedRules = processedPayment.BusinessRules.FindAll(rule => rule.GetType() == typeof(GeneratePackagingSlipBusinessRule)).Cast<GeneratePackagingSlipBusinessRule>().ToList();
 
             //Assert
 
-            returnedRules.Should().Contain(rule => rule.PackagingSlip.SlipDestination == "Customer").And
-                .Contain(rule => rule.PackagingSlip.SlipDestination == "Royalty");
+            payment.Order.PackagingSlips.Should().Contain(slip => slip.SlipDestination == "Customer").And
+                .Contain(slip => slip.SlipDestination == "Royalty");
         }
 
+        /*
         [Test]
         public void Should_ApplyAgentCommissionRule_ForPhysicalProductOrBook()
         {
