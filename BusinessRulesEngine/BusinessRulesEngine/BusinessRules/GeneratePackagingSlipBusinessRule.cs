@@ -9,16 +9,16 @@ namespace BusinessRulesEngine.BusinessRules
     public class GeneratePackagingSlipBusinessRule : IBusinessRule
     {
 
-        public PackagingSlip PackagingSlip;
+        public string SlipDestination { get; set; }
 
         public GeneratePackagingSlipBusinessRule(string slipDestination)
         {
-            PackagingSlip = new PackagingSlip(slipDestination);
+            SlipDestination = slipDestination;
         }
 
-        public void ExecuteBusinessRule(Product product)
+        public void ExecuteBusinessRule(Order order)
         {
-            PackagingSlip.ProductsToPack.Add(product);
+            order.PackagingSlips.Add(new PackagingSlip(SlipDestination));
         }
     }
 }

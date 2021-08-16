@@ -18,7 +18,7 @@ namespace BusinessRulesEngine
         public Payment ApplyBusinessRules(Payment payment)
         {
            
-            if (payment.Product.IsPhysical)
+            if (payment.Order.Products.Exists(product => product.IsPhysical))
             {
               payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule("Customer"));
             }
