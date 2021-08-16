@@ -28,7 +28,7 @@ namespace BusinessRulesEngine
                 payment.BusinessRules.Add(new GeneratePackagingSlipBusinessRule("Royalty"));
             }
 
-            if (payment.Product.IsPhysical || payment.Product.GetType() == typeof(Book))
+            if (payment.Order.Products.Exists(product => product.IsPhysical) || payment.Order.Products.Exists(product => product.GetType() == typeof(Book)))
             {
                 payment.BusinessRules.Add(new GenerateAgentCommissionBusinessRule());
             }

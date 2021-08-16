@@ -86,15 +86,19 @@ namespace Test_BusinessRulesEngine
                 .Contain(slip => slip.SlipDestination == "Royalty");
         }
 
-        /*
+        
         [Test]
         public void Should_ApplyAgentCommissionRule_ForPhysicalProductOrBook()
         {
             //Arrange
             var paymentHandler = new PaymentHandler();
+            var product = new Book() { IsPhysical = true };
+            var order = new Order();
+            order.Products.Add(product);
+
             var payment = new Payment()
             {
-                Product = new Book() { IsPhysical = true}
+                Order = order
             };
 
             //Act
@@ -102,7 +106,7 @@ namespace Test_BusinessRulesEngine
             //Assert
             processedPayment.BusinessRules.Should().ContainSingle(rule => rule.GetType() == typeof(GenerateAgentCommissionBusinessRule), "because a physical product or book should generate a commission to an agent");
         }
-
+      
         [Test]
         public void Should_ApplyMembershipActivationRule_ForMembershipProduct()
         {

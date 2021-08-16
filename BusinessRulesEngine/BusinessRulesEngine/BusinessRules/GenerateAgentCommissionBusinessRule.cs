@@ -8,9 +8,10 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class GenerateAgentCommissionBusinessRule : IBusinessRule
     {
-        public void ExecuteBusinessRule(Product product)
+        public void ExecuteBusinessRule(Order order)
         {
-            
+            var agent = order.Agent;
+            agent.Commission = 100;
         }
     }
 }

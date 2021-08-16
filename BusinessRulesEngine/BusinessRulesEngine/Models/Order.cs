@@ -16,6 +16,7 @@ namespace BusinessRulesEngine.Models
         {
             PackagingSlips = new List<PackagingSlip>();
             Products = new List<Product>();
+            Agent = new Agent();
         }
     }
 }
