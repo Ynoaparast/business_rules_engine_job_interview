@@ -4,6 +4,6 @@ namespace BusinessRulesEngine.Interfaces
 {
     public interface IBusinessRule
     {
-        void ExecuteBusinessRule(Product product);
+        void ExecuteBusinessRule(Order order);
     }
 }
