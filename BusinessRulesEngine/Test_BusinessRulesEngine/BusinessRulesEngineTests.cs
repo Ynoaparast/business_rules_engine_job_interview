@@ -112,11 +112,15 @@ namespace Test_BusinessRulesEngine
         {
             //Arrange
             var paymentHandler = new PaymentHandler();
+            var product = new Membership() {IsPhysical = false, IsActive = false};
+            var order = new Order();
+            order.Products.Add(product);
+
             var payment = new Payment()
             {
-                Product = new Membership() { IsPhysical = false, IsActive = false }
+                Order = order
             };
-
+           
             //Act
             var processedPayment = paymentHandler.ApplyBusinessRules(payment);
 
@@ -125,31 +129,37 @@ namespace Test_BusinessRulesEngine
                 .ContainSingle(rule => rule.GetType() == typeof(ActivateMembershipBusinessRule), "because a payment for a membership should apply the membership activation rule");
         }
 
+       
         [Test]
         public void Should_ActivateMembership_ForMembershipProduct()
         {
             //Arrange
             var paymentHandler = new PaymentHandler();
-            var payment = new Payment()
+            var product = new Membership() { IsPhysical = false, IsActive = false };
+            var customer = new Customer
             {
-                Product = new Membership() { IsPhysical = false, IsActive = false },
-                Customer = new Customer
-                {
-                    Email = "email@mailer.com",
-                    Firstname = "Foo",
-                    Lastname = "Bar"
-                }
+                Email = "email@mailer.com",
+                Firstname = "Foo",
+                Lastname = "Bar"
             };
 
+            var order = new Order() {Customer = customer};
+            order.Products.Add(product);
+
+            var payment = new Payment()
+            {
+                Order = order
+            };
+            
             //Act
             var processedPayment = paymentHandler.ApplyBusinessRules(payment);
             processedPayment.ExecuteBusinessRules();
-            var processedProduct = (Membership) processedPayment.Product;
+            var processedProduct = (Membership) processedPayment.Order.Products.Find(prod => prod == product);
 
             //Assert
             processedProduct.IsActive.Should().Be(true, "because a payment for a membership should activate the membership");
         }
-
+       
         [Test]
         public void Should_UpgradeMembership_ForMembershipUpgradeProduct()
         {

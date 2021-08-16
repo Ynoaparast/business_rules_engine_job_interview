@@ -8,9 +8,10 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class ActivateMembershipBusinessRule : IBusinessRule
     {
-        public void ExecuteBusinessRule(Product product)
+        public void ExecuteBusinessRule(Order order)
         {
-            var membershipProduct = (Membership) product;
+            var product = (Membership)order.Products.Find(product => product.GetType() == typeof(Membership));
+            var membershipProduct = product;
             membershipProduct.IsActive = true;
         }
     }
