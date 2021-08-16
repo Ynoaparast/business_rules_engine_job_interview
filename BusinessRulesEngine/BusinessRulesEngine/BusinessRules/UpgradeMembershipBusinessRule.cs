@@ -8,9 +8,9 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class UpgradeMembershipBusinessRule : IBusinessRule
     {
-        public void ExecuteBusinessRule(Product product)
+        public void ExecuteBusinessRule(Order order)
         {
-            var membershipUpgrade =  (MembershipUpgrade) product;
+            var membershipUpgrade = (MembershipUpgrade) order.Products.Find(product => product.GetType() == typeof(MembershipUpgrade));
             membershipUpgrade.Membership.IsUpgraded = true;
         }
     }

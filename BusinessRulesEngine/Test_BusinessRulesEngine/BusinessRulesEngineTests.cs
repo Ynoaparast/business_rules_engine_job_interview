@@ -164,30 +164,34 @@ namespace Test_BusinessRulesEngine
         public void Should_UpgradeMembership_ForMembershipUpgradeProduct()
         {
 
-           //Arrange
+            //Arrange
             var paymentHandler = new PaymentHandler();
-            var membership = new Membership();
+            var product = new Membership() { IsPhysical = false, IsActive = false };
+            var customer = new Customer
+            {
+                Email = "email@mailer.com",
+                Firstname = "Foo",
+                Lastname = "Bar"
+            };
+
+            var order = new Order() { Customer = customer };
+            order.Products.Add(product);
+
             var payment = new Payment()
             {
-                Product = new MembershipUpgrade() { Membership = membership},
-                Customer = new Customer
-                {
-                    Email = "email@mailer.com",
-                    Firstname = "Foo",
-                    Lastname = "Bar"
-                }
+                Order = order
             };
 
             //Act
             var processedPayment = paymentHandler.ApplyBusinessRules(payment);
             processedPayment.ExecuteBusinessRules();
-            var processedProduct = (MembershipUpgrade) processedPayment.Product;
+            var processedProduct = (Membership)processedPayment.Order.Products.Find(prod => prod == product);
 
             //Assert
-            processedProduct.Membership.IsUpgraded.Should().Be(true, "because a payment for a membership upgrade should upgrade the membership");
+            processedProduct.IsUpgraded.Should().Be(true, "because a payment for a membership upgrade should upgrade the membership");
 
         }
-
+        
         [Test]
         public void Should_ApplySendEmailOnActivationOrUpgrade_ForMembershipActions()
         {
