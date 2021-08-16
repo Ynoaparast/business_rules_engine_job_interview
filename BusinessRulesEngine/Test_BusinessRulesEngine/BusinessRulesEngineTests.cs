@@ -197,9 +197,20 @@ namespace Test_BusinessRulesEngine
         {
             //Arrange
             var paymentHandler = new PaymentHandler();
+            var product = new Membership() { IsPhysical = false, IsActive = false };
+            var customer = new Customer
+            {
+                Email = "email@mailer.com",
+                Firstname = "Foo",
+                Lastname = "Bar"
+            };
+
+            var order = new Order() { Customer = customer };
+            order.Products.Add(product);
+
             var payment = new Payment()
             {
-                Product = new Membership()
+                Order = order
             };
 
             //Act
@@ -210,21 +221,26 @@ namespace Test_BusinessRulesEngine
                 "because creating or upgrading a membership should send the owner an email");
         }
 
-
+        
         [Test]
         public void Should_SetCustomerDetailsForSendingEmail_ForMembershipActions()
         {
             //Arrange
             var paymentHandler = new PaymentHandler();
+            var product = new Membership() { IsPhysical = false, IsActive = false };
+            var customer = new Customer
+            {
+                Email = "email@mailer.com",
+                Firstname = "Foo",
+                Lastname = "Bar"
+            };
+
+            var order = new Order() { Customer = customer };
+            order.Products.Add(product);
+
             var payment = new Payment()
             {
-                Product = new Membership(),
-                Customer = new Customer()
-                {
-                    Email = "email@mailer.com",
-                    Firstname = "Foo",
-                    Lastname = "Bar"
-                }
+                Order = order
             };
 
             //Act
@@ -233,11 +249,11 @@ namespace Test_BusinessRulesEngine
             var businessRule = (SendEmailForMembershipBusinessRule) processedPayment.BusinessRules.Find(rule => rule.GetType() == typeof(SendEmailForMembershipBusinessRule));
             
             //Assert
-            businessRule.Email.Should().BeEquivalentTo(new Email()
-                {To = payment.Customer.Email, Content = $"Dear {payment.Customer.Firstname} {payment.Customer.Lastname}, your membership has been activated"});
+            businessRule.Emails.Should().ContainEquivalentOf(new Email()
+                {To = customer.Email, Content = $"Dear {customer.Firstname} {customer.Lastname}, your membership has been activated"});
 
         }
-
+        
         [Test]
         public void Should_ApplyFreeVideoRule_ForLearningToSkiVideo()
         {

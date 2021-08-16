@@ -8,32 +8,38 @@ namespace BusinessRulesEngine.BusinessRules
 {
     public class SendEmailForMembershipBusinessRule : IBusinessRule
     {
-        public Email Email { get; set; }
-        public Customer Customer { get; set; }
+        public List<Email> Emails { get; set; }
 
-        public SendEmailForMembershipBusinessRule(Customer customer)
+        public SendEmailForMembershipBusinessRule()
         {
-            Customer = customer;
+            Emails = new List<Email>();
         }
-
-        public void CreateEmailToSend(Product product)
+        public Email CreateEmailToSend(Product product, Customer customer)
         {
+            
             var productText = product.GetType() == typeof(Membership) ? "membership has been activated" : "membership has been upgraded";
-            var emailContent = $"Dear {Customer.Firstname} {Customer.Lastname}, your {productText}";
-            Email = new Email()
+            var emailContent = $"Dear {customer.Firstname} {customer.Lastname}, your {productText}";
+            var email = new Email()
             {
                 Content = emailContent,
-                To = Customer.Email
+                To = customer.Email
             };
-   
 
+            return email;
         }
 
-        public void ExecuteBusinessRule(Product product)
+        public void ExecuteBusinessRule(Order order)
         {
-            CreateEmailToSend(product);
-
-            //...Send Email
+            foreach (var product in order.Products)
+            {
+                if (product.GetType() == typeof(Membership) || product.GetType() == typeof(MembershipUpgrade))
+                {
+                    var email = CreateEmailToSend(product, order.Customer);
+                    Emails.Add(email);
+                }
+            }
+            
+            //...Send Email(Emails)
         }
     }
 }
