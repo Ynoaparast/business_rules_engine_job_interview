@@ -18,7 +18,15 @@ namespace BusinessRulesEngine.BusinessRules
 
         public void ExecuteBusinessRule(Order order)
         {
+            var packagingSlip = new PackagingSlip(SlipDestination);
+
+            foreach (var product in order.Products)
+            {
+                packagingSlip.ProductsToPack.Add(product);
+            }
+
             order.PackagingSlips.Add(new PackagingSlip(SlipDestination));
+
         }
     }
 }

@@ -166,7 +166,7 @@ namespace Test_BusinessRulesEngine
 
             //Arrange
             var paymentHandler = new PaymentHandler();
-            var product = new Membership() { IsPhysical = false, IsActive = false };
+            var product = new MembershipUpgrade() { IsPhysical = false, Membership = new Membership(){IsPhysical = false, IsUpgraded = false}};
             var customer = new Customer
             {
                 Email = "email@mailer.com",
@@ -185,10 +185,10 @@ namespace Test_BusinessRulesEngine
             //Act
             var processedPayment = paymentHandler.ApplyBusinessRules(payment);
             processedPayment.ExecuteBusinessRules();
-            var processedProduct = (Membership)processedPayment.Order.Products.Find(prod => prod == product);
+            var processedProduct = (MembershipUpgrade) processedPayment.Order.Products.Find(prod => prod == product);
 
             //Assert
-            processedProduct.IsUpgraded.Should().Be(true, "because a payment for a membership upgrade should upgrade the membership");
+            processedProduct.Membership.IsUpgraded.Should().Be(true, "because a payment for a membership upgrade should upgrade the membership");
 
         }
         
@@ -259,15 +259,19 @@ namespace Test_BusinessRulesEngine
         {
             //Arrange
             var paymentHandler = new PaymentHandler();
+            var product = new Video()
+            {
+                Title = "Learning to Ski",
+                IsPhysical = true
+            };
+            var order = new Order();
+            order.Products.Add(product);
+
             var payment = new Payment()
             {
-                Product = new Video()
-                {
-                    Title = "Learning to Ski",
-                    IsPhysical = true
-                }
-               
+                Order = order
             };
+          
 
             //Act
             var processedPayment = paymentHandler.ApplyBusinessRules(payment);
@@ -276,30 +280,36 @@ namespace Test_BusinessRulesEngine
             processedPayment.BusinessRules.Should().ContainSingle(rule => rule.GetType() == typeof(AddFreeFirstAidVideoBusinessRule), "because buying 'the Learning to Ski' qualifies the customer for a free 'First aid' video");
 
         }
-
+      
         [Test]
-        public void Should_AddFirstVideoToPackagingSlip_ForLearningToSkiVideo()
+        public void Should_AddFirstAidVideoToPackagingSlip_ForLearningToSkiVideo()
         {
             //Arrange
             var paymentHandler = new PaymentHandler();
+            var product = new Video()
+            {
+                Title = "Learning to Ski",
+                IsPhysical = true
+            };
+            var order = new Order();
+            order.Products.Add(product);
+
             var payment = new Payment()
             {
-                Product = new Video()
-                {
-                    Title = "Learning to Ski",
-                    IsPhysical = true
-                }
-
+                Order = order
             };
 
+            var expectedVideo = new Video() {Title = "First Aid", IsPhysical = true};
             //Act
             var processedPayment = paymentHandler.ApplyBusinessRules(payment);
             processedPayment.ExecuteBusinessRules();
-            var businessRule = (AddFreeFirstAidVideoBusinessRule) processedPayment.BusinessRules.Find(rule => rule.GetType() == typeof(AddFreeFirstAidVideoBusinessRule));
-            var product = businessRule.PackagingSlip.ProductsToPack.Find(product => product.GetType() == typeof(Video));
+            var packagingSlips = processedPayment.Order.PackagingSlips;
+            
             //Assert
-            product.Should().BeEquivalentTo(new Video() {Title = "First Aid", IsPhysical = true});
+            var slip = new PackagingSlip("Customer");
+            slip.ProductsToPack.Add(expectedVideo);
+            packagingSlips.Should().ContainEquivalentOf(slip);
 
-        } */
+        } 
     }
 }
