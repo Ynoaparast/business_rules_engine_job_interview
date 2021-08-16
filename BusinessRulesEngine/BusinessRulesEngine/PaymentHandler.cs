@@ -33,19 +33,19 @@ namespace BusinessRulesEngine
                 payment.BusinessRules.Add(new GenerateAgentCommissionBusinessRule());
             }
 
-            if (payment.Product.GetType() == typeof(Membership))
+            if (payment.Order.Products.Exists(product => product.GetType() == typeof(Membership)))
             {
                 payment.BusinessRules.Add(new ActivateMembershipBusinessRule());
-                payment.BusinessRules.Add(new SendEmailForMembershipBusinessRule(payment.Customer));
+                payment.BusinessRules.Add(new SendEmailForMembershipBusinessRule());
             }
 
-            if (payment.Product.GetType() == typeof(MembershipUpgrade))
+            if (payment.Order.Products.Exists(product => product.GetType() == typeof(MembershipUpgrade)))
             {
                 payment.BusinessRules.Add(new UpgradeMembershipBusinessRule());
-                payment.BusinessRules.Add(new SendEmailForMembershipBusinessRule(payment.Customer));
+                payment.BusinessRules.Add(new SendEmailForMembershipBusinessRule());
             }
 
-            if (payment.Product is Video {Title: "Learning to Ski"})
+            if (payment.Order.Products.Exists(product => product is Video { Title: "Learning to Ski" }))
             {
                 payment.BusinessRules.Add(new AddFreeFirstAidVideoBusinessRule("Customer"));
             }
